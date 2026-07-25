@@ -1,0 +1,222 @@
+[
+  {
+    "id": "SE-001",
+    "studentName": "Aarav Sharma",
+    "date": "2026-07-01T09:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-01T09:00:00.000Z", "engagementScore": 82, "clarityScore": 78, "pacingScore": 80 },
+      { "timestamp": "2026-07-01T09:15:00.000Z", "engagementScore": 85, "clarityScore": 81, "pacingScore": 82 },
+      { "timestamp": "2026-07-01T09:30:00.000Z", "engagementScore": 88, "clarityScore": 84, "pacingScore": 83 },
+      { "timestamp": "2026-07-01T09:45:00.000Z", "engagementScore": 84, "clarityScore": 86, "pacingScore": 81 }
+    ]
+  },
+  {
+    "id": "SE-002",
+    "studentName": "Priya Patel",
+    "date": "2026-07-02T10:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-02T10:00:00.000Z", "engagementScore": 76, "clarityScore": 82, "pacingScore": 79 },
+      { "timestamp": "2026-07-02T10:15:00.000Z", "engagementScore": 79, "clarityScore": 84, "pacingScore": 81 },
+      { "timestamp": "2026-07-02T10:30:00.000Z", "engagementScore": 81, "clarityScore": 86, "pacingScore": 80 },
+      { "timestamp": "2026-07-02T10:45:00.000Z", "engagementScore": 83, "clarityScore": 87, "pacingScore": 82 }
+    ]
+  },
+  {
+    "id": "SE-003",
+    "studentName": "Rohan Mehta",
+    "date": "2026-07-03T11:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-03T11:00:00.000Z", "engagementScore": 91, "clarityScore": 89, "pacingScore": 88 },
+      { "timestamp": "2026-07-03T11:15:00.000Z", "engagementScore": 90, "clarityScore": 90, "pacingScore": 87 },
+      { "timestamp": "2026-07-03T11:30:00.000Z", "engagementScore": 93, "clarityScore": 91, "pacingScore": 89 },
+      { "timestamp": "2026-07-03T11:45:00.000Z", "engagementScore": 94, "clarityScore": 92, "pacingScore": 90 }
+    ]
+  },
+  {
+    "id": "SE-004",
+    "studentName": "Sneha Iyer",
+    "date": "2026-07-04T09:30:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-04T09:30:00.000Z", "engagementScore": 68, "clarityScore": 74, "pacingScore": 72 },
+      { "timestamp": "2026-07-04T09:45:00.000Z", "engagementScore": 71, "clarityScore": 76, "pacingScore": 73 },
+      { "timestamp": "2026-07-04T10:00:00.000Z", "engagementScore": 73, "clarityScore": 78, "pacingScore": 75 },
+      { "timestamp": "2026-07-04T10:15:00.000Z", "engagementScore": 75, "clarityScore": 80, "pacingScore": 76 }
+    ]
+  },
+  {
+    "id": "SE-005",
+    "studentName": "Kabir Singh",
+    "date": "2026-07-05T14:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-05T14:00:00.000Z", "engagementScore": 87, "clarityScore": 83, "pacingScore": 84 },
+      { "timestamp": "2026-07-05T14:15:00.000Z", "engagementScore": 89, "clarityScore": 85, "pacingScore": 85 },
+      { "timestamp": "2026-07-05T14:30:00.000Z", "engagementScore": 90, "clarityScore": 86, "pacingScore": 86 },
+      { "timestamp": "2026-07-05T14:45:00.000Z", "engagementScore": 88, "clarityScore": 87, "pacingScore": 84 }
+    ]
+  },
+  {
+    "id": "SE-006",
+    "studentName": "Ananya Rao",
+    "date": "2026-07-06T08:30:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-06T08:30:00.000Z", "engagementScore": 79, "clarityScore": 77, "pacingScore": 78 },
+      { "timestamp": "2026-07-06T08:45:00.000Z", "engagementScore": 81, "clarityScore": 79, "pacingScore": 80 },
+      { "timestamp": "2026-07-06T09:00:00.000Z", "engagementScore": 82, "clarityScore": 81, "pacingScore": 82 },
+      { "timestamp": "2026-07-06T09:15:00.000Z", "engagementScore": 84, "clarityScore": 82, "pacingScore": 81 }
+    ]
+  },
+  {
+    "id": "SE-007",
+    "studentName": "Vivaan Gupta",
+    "date": "2026-07-07T15:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-07T15:00:00.000Z", "engagementScore": 72, "clarityScore": 70, "pacingScore": 71 },
+      { "timestamp": "2026-07-07T15:15:00.000Z", "engagementScore": 74, "clarityScore": 72, "pacingScore": 73 },
+      { "timestamp": "2026-07-07T15:30:00.000Z", "engagementScore": 76, "clarityScore": 75, "pacingScore": 74 },
+      { "timestamp": "2026-07-07T15:45:00.000Z", "engagementScore": 78, "clarityScore": 77, "pacingScore": 76 }
+    ]
+  },
+  {
+    "id": "SE-008",
+    "studentName": "Meera Nair",
+    "date": "2026-07-08T13:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-08T13:00:00.000Z", "engagementScore": 95, "clarityScore": 93, "pacingScore": 92 },
+      { "timestamp": "2026-07-08T13:15:00.000Z", "engagementScore": 96, "clarityScore": 94, "pacingScore": 93 },
+      { "timestamp": "2026-07-08T13:30:00.000Z", "engagementScore": 94, "clarityScore": 95, "pacingScore": 94 },
+      { "timestamp": "2026-07-08T13:45:00.000Z", "engagementScore": 97, "clarityScore": 96, "pacingScore": 95 }
+    ]
+  },
+  {
+    "id": "SE-009",
+    "studentName": "Arjun Verma",
+    "date": "2026-07-09T10:30:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-09T10:30:00.000Z", "engagementScore": 66, "clarityScore": 69, "pacingScore": 68 },
+      { "timestamp": "2026-07-09T10:45:00.000Z", "engagementScore": 69, "clarityScore": 71, "pacingScore": 70 },
+      { "timestamp": "2026-07-09T11:00:00.000Z", "engagementScore": 72, "clarityScore": 73, "pacingScore": 72 },
+      { "timestamp": "2026-07-09T11:15:00.000Z", "engagementScore": 74, "clarityScore": 75, "pacingScore": 73 }
+    ]
+  },
+  {
+    "id": "SE-010",
+    "studentName": "Diya Kapoor",
+    "date": "2026-07-10T16:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-10T16:00:00.000Z", "engagementScore": 84, "clarityScore": 88, "pacingScore": 86 },
+      { "timestamp": "2026-07-10T16:15:00.000Z", "engagementScore": 85, "clarityScore": 89, "pacingScore": 87 },
+      { "timestamp": "2026-07-10T16:30:00.000Z", "engagementScore": 87, "clarityScore": 90, "pacingScore": 88 },
+      { "timestamp": "2026-07-10T16:45:00.000Z", "engagementScore": 88, "clarityScore": 91, "pacingScore": 89 }
+    ]
+  },
+  {
+    "id": "SE-011",
+    "studentName": "Ishaan Joshi",
+    "date": "2026-07-11T09:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-11T09:00:00.000Z", "engagementScore": 80, "clarityScore": 79, "pacingScore": 81 },
+      { "timestamp": "2026-07-11T09:15:00.000Z", "engagementScore": 82, "clarityScore": 81, "pacingScore": 82 },
+      { "timestamp": "2026-07-11T09:30:00.000Z", "engagementScore": 83, "clarityScore": 83, "pacingScore": 84 },
+      { "timestamp": "2026-07-11T09:45:00.000Z", "engagementScore": 85, "clarityScore": 84, "pacingScore": 83 }
+    ]
+  },
+  {
+    "id": "SE-012",
+    "studentName": "Nisha Desai",
+    "date": "2026-07-12T11:30:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-12T11:30:00.000Z", "engagementScore": 90, "clarityScore": 91, "pacingScore": 90 },
+      { "timestamp": "2026-07-12T11:45:00.000Z", "engagementScore": 91, "clarityScore": 92, "pacingScore": 91 },
+      { "timestamp": "2026-07-12T12:00:00.000Z", "engagementScore": 93, "clarityScore": 93, "pacingScore": 92 },
+      { "timestamp": "2026-07-12T12:15:00.000Z", "engagementScore": 92, "clarityScore": 94, "pacingScore": 93 }
+    ]
+  },
+  {
+    "id": "SE-013",
+    "studentName": "Rahul Kulkarni",
+    "date": "2026-07-13T14:30:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-13T14:30:00.000Z", "engagementScore": 74, "clarityScore": 76, "pacingScore": 75 },
+      { "timestamp": "2026-07-13T14:45:00.000Z", "engagementScore": 76, "clarityScore": 78, "pacingScore": 76 },
+      { "timestamp": "2026-07-13T15:00:00.000Z", "engagementScore": 78, "clarityScore": 80, "pacingScore": 78 },
+      { "timestamp": "2026-07-13T15:15:00.000Z", "engagementScore": 79, "clarityScore": 81, "pacingScore": 79 }
+    ]
+  },
+  {
+    "id": "SE-014",
+    "studentName": "Pooja Shah",
+    "date": "2026-07-14T10:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-14T10:00:00.000Z", "engagementScore": 86, "clarityScore": 85, "pacingScore": 84 },
+      { "timestamp": "2026-07-14T10:15:00.000Z", "engagementScore": 88, "clarityScore": 87, "pacingScore": 86 },
+      { "timestamp": "2026-07-14T10:30:00.000Z", "engagementScore": 89, "clarityScore": 88, "pacingScore": 87 },
+      { "timestamp": "2026-07-14T10:45:00.000Z", "engagementScore": 90, "clarityScore": 89, "pacingScore": 88 }
+    ]
+  },
+  {
+    "id": "SE-015",
+    "studentName": "Aditya Mishra",
+    "date": "2026-07-15T15:30:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-15T15:30:00.000Z", "engagementScore": 70, "clarityScore": 72, "pacingScore": 71 },
+      { "timestamp": "2026-07-15T15:45:00.000Z", "engagementScore": 73, "clarityScore": 74, "pacingScore": 72 },
+      { "timestamp": "2026-07-15T16:00:00.000Z", "engagementScore": 75, "clarityScore": 76, "pacingScore": 74 },
+      { "timestamp": "2026-07-15T16:15:00.000Z", "engagementScore": 77, "clarityScore": 78, "pacingScore": 76 }
+    ]
+  },
+  {
+    "id": "SE-016",
+    "studentName": "Neha Agarwal",
+    "date": "2026-07-16T09:45:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-16T09:45:00.000Z", "engagementScore": 92, "clarityScore": 90, "pacingScore": 91 },
+      { "timestamp": "2026-07-16T10:00:00.000Z", "engagementScore": 93, "clarityScore": 91, "pacingScore": 92 },
+      { "timestamp": "2026-07-16T10:15:00.000Z", "engagementScore": 95, "clarityScore": 93, "pacingScore": 94 },
+      { "timestamp": "2026-07-16T10:30:00.000Z", "engagementScore": 94, "clarityScore": 94, "pacingScore": 93 }
+    ]
+  },
+  {
+    "id": "SE-017",
+    "studentName": "Karan Malhotra",
+    "date": "2026-07-17T13:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-17T13:00:00.000Z", "engagementScore": 78, "clarityScore": 80, "pacingScore": 79 },
+      { "timestamp": "2026-07-17T13:15:00.000Z", "engagementScore": 80, "clarityScore": 82, "pacingScore": 80 },
+      { "timestamp": "2026-07-17T13:30:00.000Z", "engagementScore": 81, "clarityScore": 83, "pacingScore": 82 },
+      { "timestamp": "2026-07-17T13:45:00.000Z", "engagementScore": 83, "clarityScore": 84, "pacingScore": 83 }
+    ]
+  },
+  {
+    "id": "SE-018",
+    "studentName": "Riya Sen",
+    "date": "2026-07-18T11:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-18T11:00:00.000Z", "engagementScore": 89, "clarityScore": 88, "pacingScore": 87 },
+      { "timestamp": "2026-07-18T11:15:00.000Z", "engagementScore": 90, "clarityScore": 89, "pacingScore": 88 },
+      { "timestamp": "2026-07-18T11:30:00.000Z", "engagementScore": 91, "clarityScore": 90, "pacingScore": 89 },
+      { "timestamp": "2026-07-18T11:45:00.000Z", "engagementScore": 92, "clarityScore": 91, "pacingScore": 90 }
+    ]
+  },
+  {
+    "id": "SE-019",
+    "studentName": "Manav Bhatia",
+    "date": "2026-07-19T14:00:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-19T14:00:00.000Z", "engagementScore": 65, "clarityScore": 67, "pacingScore": 66 },
+      { "timestamp": "2026-07-19T14:15:00.000Z", "engagementScore": 68, "clarityScore": 69, "pacingScore": 68 },
+      { "timestamp": "2026-07-19T14:30:00.000Z", "engagementScore": 70, "clarityScore": 71, "pacingScore": 70 },
+      { "timestamp": "2026-07-19T14:45:00.000Z", "engagementScore": 72, "clarityScore": 73, "pacingScore": 72 }
+    ]
+  },
+  {
+    "id": "SE-020",
+    "studentName": "Aisha Khan",
+    "date": "2026-07-20T10:30:00.000Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "2026-07-20T10:30:00.000Z", "engagementScore": 88, "clarityScore": 90, "pacingScore": 89 },
+      { "timestamp": "2026-07-20T10:45:00.000Z", "engagementScore": 89, "clarityScore": 91, "pacingScore": 90 },
+      { "timestamp": "2026-07-20T11:00:00.000Z", "engagementScore": 91, "clarityScore": 92, "pacingScore": 91 },
+      { "timestamp": "2026-07-20T11:15:00.000Z", "engagementScore": 92, "clarityScore": 93, "pacingScore": 92 }
+    ]
+  }
+]
