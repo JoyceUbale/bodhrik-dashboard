@@ -1,13 +1,10 @@
 "use client"
 
+import Link from "next/link"
 import {
   ChevronDown,
   ChevronUp,
   ChevronsUpDown,
-  ClipboardList,
-  RotateCcw,
-  SearchX,
-  TriangleAlert,
 } from "lucide-react"
 
 import { StatusBadge } from "@/components/status-badge"
@@ -121,7 +118,7 @@ export function EvaluationsTable({
             ? rows.map((row) => (
                 <tr
                   key={row.id}
-                  className="border-b border-border last:border-0 transition-colors hover:bg-muted/50"
+                  className="group border-b border-border last:border-0 transition-colors hover:bg-muted/50"
                 >
                   <td className={CELL}>
                     <div className="flex items-center gap-3">
@@ -132,9 +129,12 @@ export function EvaluationsTable({
                         {initialsOf(row.studentName)}
                       </span>
                       <span className="flex min-w-0 flex-col">
-                        <span className="font-medium text-foreground">
+                        <Link
+                          href={`/sessions/${row.id}`}
+                          className="font-medium text-foreground transition-colors group-hover:text-teal-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                        >
                           {row.studentName}
-                        </span>
+                        </Link>
                         <span className="truncate text-xs text-muted-foreground">
                           {row.studentEmail}
                         </span>
@@ -143,14 +143,17 @@ export function EvaluationsTable({
                   </td>
 
                   <td className={CELL}>
-                    <span className="flex flex-col">
+                    <Link
+                      href={`/sessions/${row.id}`}
+                      className="flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                    >
                       <span className="tabular text-foreground">
                         {formatSessionDate(row.sessionDate)}
                       </span>
                       <span className="tabular text-xs text-muted-foreground">
                         {row.durationMins} min · {row.id}
                       </span>
-                    </span>
+                    </Link>
                   </td>
 
                   <td className={`${CELL} hidden text-muted-foreground lg:table-cell`}>
