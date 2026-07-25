@@ -1,26 +1,120 @@
 @import "tailwindcss";
 
+/*
+  Palette (5 colors total):
+  1. Primary  - teal    (brand, focus rings, active states)
+  2. Neutral  - zinc    (surfaces, borders, text)
+  3. Accent   - amber   (needs-review / warning)
+  4. Positive - emerald (passed)
+  5. Danger   - red     (failed / error)
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --background: #fafafa;
+  --foreground: #18181b;
+
+  --card: #ffffff;
+  --card-foreground: #18181b;
+
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+
+  --border: #e4e4e7;
+  --input: #ffffff;
+  --ring: #0d9488;
+
+  --primary: #0d9488;
+  --primary-foreground: #ffffff;
+  --primary-muted: #f0fdfa;
+
+  --accent: #b45309;
+  --accent-muted: #fffbeb;
+
+  --positive: #047857;
+  --positive-muted: #ecfdf5;
+
+  --danger: #b91c1c;
+  --danger-muted: #fef2f2;
+
+  --radius: 0.625rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --background: #09090b;
+    --foreground: #fafafa;
+
+    --card: #101013;
+    --card-foreground: #fafafa;
+
+    --muted: #18181b;
+    --muted-foreground: #a1a1aa;
+
+    --border: #27272a;
+    --input: #18181b;
+    --ring: #2dd4bf;
+
+    --primary: #2dd4bf;
+    --primary-foreground: #042f2e;
+    --primary-muted: #0d2b2a;
+
+    --accent: #fbbf24;
+    --accent-muted: #2a2010;
+
+    --positive: #34d399;
+    --positive-muted: #0c2a20;
+
+    --danger: #f87171;
+    --danger-muted: #2c1416;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-muted: var(--primary-muted);
+
+  --color-accent: var(--accent);
+  --color-accent-muted: var(--accent-muted);
+
+  --color-positive: var(--positive);
+  --color-positive-muted: var(--positive-muted);
+
+  --color-danger: var(--danger);
+  --color-danger-muted: var(--danger-muted);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Keep numeric columns aligned in the evaluations table */
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
