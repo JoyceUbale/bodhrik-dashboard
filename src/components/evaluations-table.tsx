@@ -16,11 +16,23 @@ import {
   initialsOf,
   type SessionEvaluation,
 } from "@/lib/session-evaluations"
-import type { TableState } from "@/components/evaluation-filters"
 
 export type SortKey = "studentName" | "sessionDate" | "score"
 export type SortDirection = "asc" | "desc"
 export type Sort = { key: SortKey; direction: SortDirection }
+
+/**
+ * What the table body should render. Derived from the fetch lifecycle and the
+ * response payload — never set by hand.
+ */
+export type TableView =
+  | "loading"
+  | "error"
+  /** The system holds zero evaluations at all. */
+  | "no-data"
+  /** Evaluations exist, but none match the active filters. */
+  | "no-results"
+  | "rows"
 
 const COLUMNS: {
   key: SortKey | null
@@ -40,24 +52,28 @@ const CELL = "px-5 py-4 align-middle text-sm"
 
 type Props = {
   rows: SessionEvaluation[]
-  state: TableState
+  view: TableView
+  errorMessage?: string
   sort: Sort
   onSortChange: (key: SortKey) => void
-  hasActiveFilters: boolean
   onReset: () => void
   onRetry: () => void
+  /** Skeleton row count, kept stable across transitions to avoid layout jumps. */
+  skeletonRows?: number
 }
 
 export function EvaluationsTable({
   rows,
-  state,
+  view,
+  errorMessage,
   sort,
   onSortChange,
-  hasActiveFilters,
   onReset,
   onRetry,
+  skeletonRows = 6,
 }: Props) {
-  const showBody = state === "ready" && rows.length > 0
+  // Sorting is meaningless unless there are rows to reorder.
+  const sortingDisabled = view !== "rows"
 
   return (
     <div className="overflow-x-auto">
@@ -89,7 +105,8 @@ export function EvaluationsTable({
                     <button
                       type="button"
                       onClick={() => onSortChange(column.key as SortKey)}
-                      className={`group inline-flex items-center gap-1.5 rounded-sm uppercase transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 ${
+                      disabled={sortingDisabled}
+                      className={`group inline-flex items-center gap-1.5 rounded-sm uppercase transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:text-muted-foreground ${
                         isSorted ? "text-foreground" : ""
                       } ${column.align === "right" ? "flex-row-reverse" : ""}`}
                     >
@@ -116,15 +133,18 @@ export function EvaluationsTable({
           </tr>
         </thead>
 
-        <tbody>
-          {state === "loading" ? <LoadingRows /> : null}
+        <tbody aria-busy={view === "loading"}>
+          {view === "loading" ? <LoadingRows count={skeletonRows} /> : null}
 
-          {state === "error" ? (
+          {view === "error" ? (
             <StateRow
               Icon={TriangleAlert}
               tone="danger"
               title="Couldn’t load evaluations"
-              description="The request to the evaluations service failed. Check your connection and try again."
+              description={
+                errorMessage ??
+                "The request to the evaluations service failed. Check your connection and try again."
+              }
               action={
                 <button
                   type="button"
@@ -132,13 +152,13 @@ export function EvaluationsTable({
                   className="inline-flex items-center gap-2 rounded-md bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                 >
                   <RotateCcw aria-hidden="true" className="size-4" />
-                  Try again
+                  Retry
                 </button>
               }
             />
           ) : null}
 
-          {state === "empty" ? (
+          {view === "no-data" ? (
             <StateRow
               Icon={ClipboardList}
               tone="muted"
@@ -147,28 +167,26 @@ export function EvaluationsTable({
             />
           ) : null}
 
-          {state === "ready" && rows.length === 0 ? (
+          {view === "no-results" ? (
             <StateRow
               Icon={SearchX}
               tone="muted"
               title="No matching evaluations"
-              description="No sessions match your current search and filters. Try widening the date range."
+              description="No evaluations match your search criteria. Try clearing filters."
               action={
-                hasActiveFilters ? (
-                  <button
-                    type="button"
-                    onClick={onReset}
-                    className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
-                  >
-                    <RotateCcw aria-hidden="true" className="size-4" />
-                    Reset filters
-                  </button>
-                ) : undefined
+                <button
+                  type="button"
+                  onClick={onReset}
+                  className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                >
+                  <RotateCcw aria-hidden="true" className="size-4" />
+                  Reset filters
+                </button>
               }
             />
           ) : null}
 
-          {showBody
+          {view === "rows"
             ? rows.map((row) => (
                 <tr
                   key={row.id}
@@ -263,38 +281,40 @@ function ScoreCell({ score }: { score: number | null }) {
   )
 }
 
-function LoadingRows() {
+function LoadingRows({ count }: { count: number }) {
   return (
     <>
-      {Array.from({ length: 6 }).map((_, index) => (
+      {Array.from({ length: count }).map((_, index) => (
         <tr key={index} className="border-b border-border last:border-0">
           <td className={CELL}>
             <div className="flex items-center gap-3">
-              <span className="size-9 shrink-0 animate-pulse rounded-full bg-muted" />
+              <span className="shimmer size-9 shrink-0 rounded-full" />
               <span className="flex flex-col gap-2">
-                <span className="block h-3.5 w-32 animate-pulse rounded-sm bg-muted" />
-                <span className="block h-2.5 w-40 animate-pulse rounded-sm bg-muted" />
+                <span className="shimmer block h-3.5 w-32 rounded-sm" />
+                <span className="shimmer block h-2.5 w-40 rounded-sm" />
               </span>
             </div>
-            <span className="sr-only">Loading evaluations…</span>
+            {index === 0 ? (
+              <span className="sr-only">Loading evaluations…</span>
+            ) : null}
           </td>
           <td className={CELL}>
             <span className="flex flex-col gap-2">
-              <span className="block h-3.5 w-24 animate-pulse rounded-sm bg-muted" />
-              <span className="block h-2.5 w-20 animate-pulse rounded-sm bg-muted" />
+              <span className="shimmer block h-3.5 w-24 rounded-sm" />
+              <span className="shimmer block h-2.5 w-20 rounded-sm" />
             </span>
           </td>
           <td className={`${CELL} hidden lg:table-cell`}>
-            <span className="block h-3.5 w-24 animate-pulse rounded-sm bg-muted" />
+            <span className="shimmer block h-3.5 w-24 rounded-sm" />
           </td>
           <td className={`${CELL} hidden md:table-cell`}>
-            <span className="block h-6 w-28 animate-pulse rounded-md bg-muted" />
+            <span className="shimmer block h-6 w-28 rounded-md" />
           </td>
           <td className={CELL}>
-            <span className="ml-auto block h-3.5 w-14 animate-pulse rounded-sm bg-muted" />
+            <span className="shimmer ml-auto block h-3.5 w-14 rounded-sm" />
           </td>
           <td className={CELL}>
-            <span className="block h-7 w-24 animate-pulse rounded-full bg-muted" />
+            <span className="shimmer block h-7 w-24 rounded-full" />
           </td>
         </tr>
       ))}

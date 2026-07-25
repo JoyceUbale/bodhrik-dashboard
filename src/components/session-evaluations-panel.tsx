@@ -1,29 +1,25 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 
-import {
-  EvaluationFilters,
-  type Filters,
-  type TableState,
-} from "@/components/evaluation-filters"
+import { EvaluationFilters, type Filters } from "@/components/evaluation-filters"
 import {
   EvaluationsTable,
   type Sort,
   type SortKey,
+  type TableView,
 } from "@/components/evaluations-table"
 import { TablePagination } from "@/components/table-pagination"
-import type { SessionEvaluation } from "@/lib/session-evaluations"
+import {
+  SEARCH_DEBOUNCE_MS,
+  useDebouncedValue,
+  useSessionEvaluations,
+} from "@/lib/use-session-evaluations"
 
 const EMPTY_FILTERS: Filters = { query: "", from: "", to: "", status: "all" }
 
-export function SessionEvaluationsPanel({
-  evaluations,
-}: {
-  evaluations: SessionEvaluation[]
-}) {
+export function SessionEvaluationsPanel() {
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS)
-  const [state, setState] = useState<TableState>("ready")
   const [sort, setSort] = useState<Sort>({
     key: "sessionDate",
     direction: "desc",
@@ -31,47 +27,47 @@ export function SessionEvaluationsPanel({
   const [pageSize, setPageSize] = useState(10)
   const [page, setPage] = useState(1)
 
+  // Only the free-text search is debounced; date and status changes are
+  // discrete, so they should apply immediately.
+  const debouncedQuery = useDebouncedValue(filters.query, SEARCH_DEBOUNCE_MS)
+  const isDebouncing = debouncedQuery !== filters.query
+
+  const { data, error, isFetching, retry } = useSessionEvaluations({
+    query: debouncedQuery,
+    from: filters.from,
+    to: filters.to,
+    status: filters.status,
+    sortKey: sort.key,
+    direction: sort.direction,
+    page,
+    pageSize,
+  })
+
   const hasActiveFilters =
     filters.query !== "" ||
     filters.from !== "" ||
     filters.to !== "" ||
     filters.status !== "all"
 
-  const visibleRows = useMemo(() => {
-    const query = filters.query.trim().toLowerCase()
+  // Skeletons cover both the in-flight request and the debounce gap, so typing
+  // never leaves stale rows sitting under a new query.
+  const isPending = isFetching || isDebouncing
 
-    const filtered = evaluations.filter((row) => {
-      if (query && !row.studentName.toLowerCase().includes(query)) return false
-      if (filters.from && row.sessionDate < filters.from) return false
-      if (filters.to && row.sessionDate > filters.to) return false
-      if (filters.status !== "all" && row.status !== filters.status) return false
-      return true
-    })
+  const view: TableView = error
+    ? "error"
+    : isPending || !data
+      ? "loading"
+      : data.totalUnfiltered === 0
+        ? "no-data"
+        : data.total === 0
+          ? "no-results"
+          : "rows"
 
-    const factor = sort.direction === "asc" ? 1 : -1
-
-    return filtered.sort((a, b) => {
-      if (sort.key === "score") {
-        // Pending rows (null score) always sort last.
-        if (a.score === null && b.score === null) return 0
-        if (a.score === null) return 1
-        if (b.score === null) return -1
-        return (a.score - b.score) * factor
-      }
-
-      return a[sort.key].localeCompare(b[sort.key]) * factor
-    })
-  }, [evaluations, filters, sort])
-
-  const isReady = state === "ready"
-  const totalRows = visibleRows.length
+  const rows = data?.rows ?? []
+  const totalRows = data?.total ?? 0
   const pageCount = Math.max(1, Math.ceil(totalRows / pageSize))
-
-  // Derived during render so a shrinking result set can never leave the view
-  // stranded on an out-of-range page.
-  const safePage = Math.min(page, pageCount)
-  const start = (safePage - 1) * pageSize
-  const pageRows = visibleRows.slice(start, start + pageSize)
+  const start = (page - 1) * pageSize
+  const showingRows = view === "rows"
 
   const handleSortChange = (key: SortKey) => {
     setSort((current) =>
@@ -82,6 +78,7 @@ export function SessionEvaluationsPanel({
     setPage(1)
   }
 
+  // Any change to the result set invalidates the current page offset.
   const handleFiltersChange = (next: Filters) => {
     setFilters(next)
     setPage(1)
@@ -100,31 +97,32 @@ export function SessionEvaluationsPanel({
       <EvaluationFilters
         filters={filters}
         onFiltersChange={handleFiltersChange}
-        state={state}
-        onStateChange={setState}
         hasActiveFilters={hasActiveFilters}
         onReset={handleReset}
-        resultCount={totalRows}
+        resultCount={error ? null : (data?.total ?? null)}
+        isFetching={isPending}
       />
 
       <EvaluationsTable
-        rows={pageRows}
-        state={state}
+        rows={rows}
+        view={view}
+        errorMessage={error?.message}
         sort={sort}
         onSortChange={handleSortChange}
-        hasActiveFilters={hasActiveFilters}
         onReset={handleReset}
-        onRetry={() => setState("ready")}
+        onRetry={retry}
+        // Match the previous page's density so the table doesn't jump height.
+        skeletonRows={Math.min(pageSize, Math.max(rows.length, 6))}
       />
 
       <TablePagination
-        page={isReady ? safePage : 1}
-        pageCount={isReady ? pageCount : 1}
+        page={showingRows ? page : 1}
+        pageCount={showingRows ? pageCount : 1}
         pageSize={pageSize}
-        totalRows={isReady ? totalRows : 0}
-        rangeStart={totalRows === 0 ? 0 : start + 1}
-        rangeEnd={Math.min(start + pageSize, totalRows)}
-        disabled={!isReady || totalRows === 0}
+        totalRows={showingRows ? totalRows : 0}
+        rangeStart={showingRows ? start + 1 : 0}
+        rangeEnd={showingRows ? Math.min(start + pageSize, totalRows) : 0}
+        disabled={!showingRows}
         onPageChange={(next) => setPage(Math.min(Math.max(next, 1), pageCount))}
         onPageSizeChange={(size) => {
           setPageSize(size)

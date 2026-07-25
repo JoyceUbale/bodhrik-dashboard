@@ -1,5 +1,4 @@
 import { SessionEvaluationsPanel } from "@/components/session-evaluations-panel"
-import { SESSION_EVALUATIONS } from "@/lib/session-evaluations"
 
 export default function Home() {
   return (
@@ -19,7 +18,7 @@ export default function Home() {
           </p>
         </header>
 
-        <SessionEvaluationsPanel evaluations={SESSION_EVALUATIONS} />
+        <SessionEvaluationsPanel />
       </main>
     </div>
   )
