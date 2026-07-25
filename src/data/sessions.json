@@ -218,5 +218,27 @@
       { "timestamp": "2026-07-20T11:00:00.000Z", "engagementScore": 91, "clarityScore": 92, "pacingScore": 91 },
       { "timestamp": "2026-07-20T11:15:00.000Z", "engagementScore": 92, "clarityScore": 93, "pacingScore": 92 }
     ]
+  },
+  {
+    "id": "SE-021",
+    "studentName": "Vikram Sethi",
+    "date": "2026-07-20T10:00:00Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "10:05", "engagementScore": 45, "clarityScore": 50, "pacingScore": 40 },
+      { "timestamp": "10:15", "engagementScore": 50, "clarityScore": 45, "pacingScore": 55 },
+      { "timestamp": "10:25", "engagementScore": 40, "clarityScore": 40, "pacingScore": 50 },
+      { "timestamp": "10:35", "engagementScore": 35, "clarityScore": 45, "pacingScore": 40 }
+    ]
+  },
+  {
+    "id": "SE-022",
+    "studentName": "Ananya Roy",
+    "date": "2026-07-19T14:30:00Z",
+    "timeSeriesMetrics": [
+      { "timestamp": "14:35", "engagementScore": 55, "clarityScore": 50, "pacingScore": 60 },
+      { "timestamp": "14:45", "engagementScore": 48, "clarityScore": 52, "pacingScore": 45 },
+      { "timestamp": "14:55", "engagementScore": 50, "clarityScore": 40, "pacingScore": 50 },
+      { "timestamp": "15:05", "engagementScore": 45, "clarityScore": 45, "pacingScore": 48 }
+    ]
   }
 ]

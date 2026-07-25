@@ -5,6 +5,9 @@ import {
   ChevronDown,
   ChevronUp,
   ChevronsUpDown,
+  RotateCcw,
+  SearchX,
+  TriangleAlert,
 } from "lucide-react"
 
 import { StatusBadge } from "@/components/status-badge"
@@ -13,7 +16,6 @@ import {
   initialsOf,
   type SessionEvaluation,
 } from "@/lib/session-evaluations"
-import type { TableState } from "@/components/evaluation-filters"
 
 export type SortKey = "studentName" | "sessionDate" | "score"
 export type SortDirection = "asc" | "desc"
@@ -37,7 +39,8 @@ const CELL = "px-5 py-4 align-middle text-sm"
 
 type Props = {
   rows: SessionEvaluation[]
-  state: TableState
+  isLoading: boolean
+  isError: boolean
   sort: Sort
   onSortChange: (key: SortKey) => void
   hasActiveFilters: boolean
@@ -47,37 +50,26 @@ type Props = {
 
 export function EvaluationsTable({
   rows,
-  state,
+  isLoading,
+  isError,
   sort,
   onSortChange,
   hasActiveFilters,
   onReset,
   onRetry,
 }: Props) {
-  const showBody = state === "ready" && rows.length > 0
-
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-left">
-        <caption className="sr-only">
-          Session evaluations, sortable by student, session date, and score.
-        </caption>
-
         <thead>
           <tr className="border-b border-border bg-muted/60">
             {COLUMNS.map((column) => {
               const isSorted = column.key !== null && sort.key === column.key
-              const ariaSort = isSorted
-                ? sort.direction === "asc"
-                  ? "ascending"
-                  : "descending"
-                : undefined
 
               return (
                 <th
                   key={column.label}
                   scope="col"
-                  aria-sort={ariaSort}
                   className={`px-5 py-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase ${
                     column.align === "right" ? "text-right" : ""
                   } ${column.className ?? ""}`}
@@ -86,22 +78,17 @@ export function EvaluationsTable({
                     <button
                       type="button"
                       onClick={() => onSortChange(column.key as SortKey)}
-                      className={`group inline-flex items-center gap-1.5 rounded-sm uppercase transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 ${
-                        isSorted ? "text-foreground" : ""
-                      } ${column.align === "right" ? "flex-row-reverse" : ""}`}
+                      className="group inline-flex items-center gap-1.5 rounded-sm uppercase transition-colors hover:text-foreground"
                     >
                       {column.label}
                       {isSorted ? (
                         sort.direction === "asc" ? (
-                          <ChevronUp aria-hidden="true" className="size-3.5" />
+                          <ChevronUp className="size-3.5" />
                         ) : (
-                          <ChevronDown aria-hidden="true" className="size-3.5" />
+                          <ChevronDown className="size-3.5" />
                         )
                       ) : (
-                        <ChevronsUpDown
-                          aria-hidden="true"
-                          className="size-3.5 opacity-40 transition-opacity group-hover:opacity-100"
-                        />
+                        <ChevronsUpDown className="size-3.5 opacity-40 group-hover:opacity-100" />
                       )}
                     </button>
                   ) : (
@@ -114,68 +101,131 @@ export function EvaluationsTable({
         </thead>
 
         <tbody>
-          {showBody
-            ? rows.map((row) => (
-                <tr
-                  key={row.id}
-                  className="group border-b border-border last:border-0 transition-colors hover:bg-muted/50"
-                >
-                  <td className={CELL}>
-                    <div className="flex items-center gap-3">
-                      <span
-                        aria-hidden="true"
-                        className="grid size-9 shrink-0 place-items-center rounded-full bg-teal-500/10 text-xs font-semibold text-teal-400"
-                      >
-                        {initialsOf(row.studentName)}
-                      </span>
-                      <span className="flex min-w-0 flex-col">
-                        <Link
-                          href={`/sessions/${row.id}`}
-                          className="font-medium text-foreground transition-colors group-hover:text-teal-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
-                        >
-                          {row.studentName}
-                        </Link>
-                        <span className="truncate text-xs text-muted-foreground">
-                          {row.studentEmail}
-                        </span>
-                      </span>
+          {/* 1. ERROR STATE */}
+          {isError ? (
+            <tr>
+              <td colSpan={6} className="p-12 text-center">
+                <div className="flex flex-col items-center gap-3 text-rose-400">
+                  <TriangleAlert className="size-8" />
+                  <p className="text-sm font-medium">Failed to load session evaluations.</p>
+                  <button
+                    onClick={onRetry}
+                    className="inline-flex items-center gap-2 rounded-md bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-400 hover:bg-rose-500/20"
+                  >
+                    <RotateCcw className="size-3.5" />
+                    Try again
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ) : isLoading ? (
+            /* 2. LOADING STATE (SKELETON ROWS) */
+            Array.from({ length: 5 }).map((_, idx) => (
+              <tr key={idx} className="border-b border-border">
+                <td className={CELL}>
+                  <div className="flex items-center gap-3">
+                    <div className="size-9 animate-pulse rounded-full bg-muted" />
+                    <div className="space-y-1.5">
+                      <div className="h-4 w-28 animate-pulse rounded bg-muted" />
+                      <div className="h-3 w-36 animate-pulse rounded bg-muted" />
                     </div>
-                  </td>
-
-                  <td className={CELL}>
-                    <Link
-                      href={`/sessions/${row.id}`}
-                      className="flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                  </div>
+                </td>
+                <td className={CELL}>
+                  <div className="h-4 w-24 animate-pulse rounded bg-muted" />
+                </td>
+                <td className={`${CELL} hidden lg:table-cell`}>
+                  <div className="h-4 w-20 animate-pulse rounded bg-muted" />
+                </td>
+                <td className={`${CELL} hidden md:table-cell`}>
+                  <div className="h-4 w-24 animate-pulse rounded bg-muted" />
+                </td>
+                <td className={CELL}>
+                  <div className="ml-auto h-4 w-12 animate-pulse rounded bg-muted" />
+                </td>
+                <td className={CELL}>
+                  <div className="h-6 w-16 animate-pulse rounded-full bg-muted" />
+                </td>
+              </tr>
+            ))
+          ) : rows.length === 0 ? (
+            /* 3. EMPTY STATE */
+            <tr>
+              <td colSpan={6} className="p-12 text-center">
+                <div className="flex flex-col items-center gap-3 text-muted-foreground">
+                  <SearchX className="size-8 opacity-50" />
+                  <p className="text-sm font-medium">
+                    No evaluations match your search criteria.
+                  </p>
+                  {hasActiveFilters && (
+                    <button
+                      onClick={onReset}
+                      className="inline-flex items-center gap-1.5 rounded-md bg-muted px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted/80"
                     >
-                      <span className="tabular text-foreground">
-                        {formatSessionDate(row.sessionDate)}
-                      </span>
-                      <span className="tabular text-xs text-muted-foreground">
-                        {row.durationMins} min · {row.id}
-                      </span>
-                    </Link>
-                  </td>
-
-                  <td className={`${CELL} hidden text-muted-foreground lg:table-cell`}>
-                    {row.evaluator}
-                  </td>
-
-                  <td className={`${CELL} hidden md:table-cell`}>
-                    <span className="inline-flex rounded-md border border-border bg-muted/50 px-2 py-1 text-xs text-muted-foreground">
-                      {row.focusArea}
+                      <RotateCcw className="size-3.5" />
+                      Reset filters
+                    </button>
+                  )}
+                </div>
+              </td>
+            </tr>
+          ) : (
+            /* 4. READY STATE */
+            rows.map((row) => (
+              <tr
+                key={row.id}
+                className="group border-b border-border last:border-0 transition-colors hover:bg-muted/50"
+              >
+                <td className={CELL}>
+                  <div className="flex items-center gap-3">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-teal-500/10 text-xs font-semibold text-teal-400">
+                      {initialsOf(row.studentName)}
                     </span>
-                  </td>
+                    <span className="flex min-w-0 flex-col">
+                      <Link
+                        href={`/sessions/${row.id}`}
+                        className="font-medium text-foreground transition-colors group-hover:text-teal-400 hover:underline"
+                      >
+                        {row.studentName}
+                      </Link>
+                      <span className="truncate text-xs text-muted-foreground">
+                        {row.studentEmail}
+                      </span>
+                    </span>
+                  </div>
+                </td>
 
-                  <td className={`${CELL} text-right`}>
-                    <ScoreCell score={row.score} />
-                  </td>
+                <td className={CELL}>
+                  <Link href={`/sessions/${row.id}`} className="flex flex-col">
+                    <span className="tabular text-foreground">
+                      {formatSessionDate(row.sessionDate)}
+                    </span>
+                    <span className="tabular text-xs text-muted-foreground">
+                      {row.durationMins} min · {row.id}
+                    </span>
+                  </Link>
+                </td>
 
-                  <td className={CELL}>
-                    <StatusBadge status={row.status} />
-                  </td>
-                </tr>
-              ))
-            : null}
+                <td className={`${CELL} hidden text-muted-foreground lg:table-cell`}>
+                  {row.evaluator}
+                </td>
+
+                <td className={`${CELL} hidden md:table-cell`}>
+                  <span className="inline-flex rounded-md border border-border bg-muted/50 px-2 py-1 text-xs text-muted-foreground">
+                    {row.focusArea}
+                  </span>
+                </td>
+
+                <td className={`${CELL} text-right`}>
+                  <ScoreCell score={row.score} />
+                </td>
+
+                <td className={CELL}>
+                  <StatusBadge status={row.status} />
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>
@@ -183,30 +233,11 @@ export function EvaluationsTable({
 }
 
 function ScoreCell({ score }: { score: number | null }) {
-  if (score === null) {
-    return <span className="text-sm text-muted-foreground">—</span>
-  }
-
-  const tone =
-    score >= 80 ? "text-emerald-400" : score >= 60 ? "text-amber-400" : "text-rose-400"
-  const barBg =
-    score >= 80 ? "bg-emerald-400" : score >= 60 ? "bg-amber-400" : "bg-rose-400"
-
+  if (score === null) return <span className="text-sm text-muted-foreground">—</span>
+  const tone = score >= 80 ? "text-emerald-400" : score >= 60 ? "text-amber-400" : "text-rose-400"
   return (
-    <span className="inline-flex flex-col items-end gap-1.5">
-      <span className={`tabular font-mono text-sm font-semibold ${tone}`}>
-        {score}
-        <span className="text-xs font-normal text-muted-foreground">/100</span>
-      </span>
-      <span
-        aria-hidden="true"
-        className="h-1 w-16 overflow-hidden rounded-full bg-muted"
-      >
-        <span
-          className={`block h-full rounded-full ${barBg}`}
-          style={{ width: `${score}%` }}
-        />
-      </span>
+    <span className={`tabular font-mono text-sm font-semibold ${tone}`}>
+      {score}/100
     </span>
   )
 }
