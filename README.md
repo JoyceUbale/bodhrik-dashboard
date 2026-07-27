@@ -1,6 +1,6 @@
 # Student Progress Tracker — Bodhrik Session Evaluation Dashboard
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](bodhrik-dashboard-y5ok.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://bodhrik-dashboard-y5ok.vercel.app/login)
 
 A responsive, production-ready Next.js dashboard built to review coach-submitted tutoring session evaluations. The application features live filtering by student name, date range, and status, dynamic time-series metric computation, interactive Recharts visualization, mobile-responsive layouts, and native handling for all UI states (loading skeletons, data view, empty states, and error handling).
 
